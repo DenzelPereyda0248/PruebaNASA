@@ -12,7 +12,7 @@ are joined without correction, fire activity seems to jump just because the inst
 This prototype harmonizes both records on an H3 hexagon grid for **Mexico in 2024**
 and shows a **daily burning calendar** for the whole country or for any hexagon.
 
-**Live demo:** _add the Vercel URL here after deploying (see [Deploy](#deploy))._
+**Live demo:** https://denzelpereyda0248.github.io/PruebaNASA/
 
 ![All of Mexico: hexagon map and national burning calendar](docs/screenshots/national.png)
 
@@ -104,13 +104,19 @@ Jul 24–28, Sep 26, Nov 3–5). These are outages, so they are exported as miss
 
 ## Deploy
 
-The web app is a static site. Vercel settings for the `web/` folder are in
+The web app is a static site.
+
+**GitHub Pages (current):** every push to `main` that touches `web/` runs
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml), which builds the app with
+`VITE_BASE=/PruebaNASA/` and publishes it to the `gh-pages` branch.
+
+**Vercel (alternative):** settings for the `web/` folder are in
 [`web/vercel.json`](web/vercel.json).
 
 1. Push this repository to GitHub.
 2. In Vercel: **Add New → Project**, import the repository.
 3. Set **Root Directory** to `web`. Vercel detects Vite (build `npm run build`, output `dist`).
-4. Deploy and add the URL at the top of this README.
+4. Deploy.
 
 Netlify works the same way: base directory `web`, build command `npm run build`,
 publish directory `web/dist`.
