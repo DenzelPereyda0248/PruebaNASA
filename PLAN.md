@@ -121,6 +121,16 @@ Todos los JSON en `web/public/data/`. Tamaño total objetivo: **menos de 15 MB**
 [ { "date": "2024-04-15", "modis": 3, "viirs": 11, "viirs_h": 2.9 } ]
 ```
 
+**Cambio aprobado (después de la Fase 1): días sin datos.** VIIRS S-NPP no tiene ninguna
+detección en 20 días de 2024 (caídas del satélite). Esos días son "sin datos", no "cero fuegos":
+- `meta.json` agrega `"no_data_days": { "modis": [], "viirs": ["2024-05-30", ...] }`, además de
+  `harmonization.annual_factor`, `harmonization.reference` (`{"modis": "Aqua", "viirs": "S-NPP"}`),
+  `series` (descripción de cada campo) y `utc_offset_hours`.
+- `national.json` trae **todos** los días del año; en días sin datos de VIIRS, `viirs` y `viirs_h` son `null`.
+- `cells/<h3>.json`: en días sin datos de VIIRS, `viirs` y `viirs_h` son `null` (MODIS se conserva).
+- `modis` es **MODIS Aqua** (satélite de referencia); Terra solo se usa en reportes.
+- La web muestra los días sin datos en gris. Los campos existentes no cambian de nombre ni de tipo.
+
 ## 8. Fases
 
 Cada fase termina con: (a) un resumen corto de lo hecho, (b) lo que queda pendiente o dudoso, (c) cómo verificarlo. Luego **esperar confirmación**.

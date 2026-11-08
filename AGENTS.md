@@ -12,11 +12,12 @@ Full plan and phase rules: `PLAN.md` (read it first).
 - `tests/` pytest · `web/` Vite + React + TS · `web/public/data/` exported JSON
 
 ## JSON contract (`web/public/data/`, total < 15 MB)
-- `meta.json`: country, year, h3_resolution, filters, harmonization factors, sources
+- `meta.json`: country, year, h3_resolution, filters, harmonization factors, sources, `no_data_days`
 - `cells.json`: `[{h3, modis, viirs, viirs_h}]` totals per cell
-- `national.json`: `[{date, modis, viirs, viirs_h}]` daily, whole country
+- `national.json`: `[{date, modis, viirs, viirs_h}]` every day of the year, whole country
 - `cells/<h3>.json`: `[{date, modis, viirs, viirs_h}]` daily, days with detections only
-- `viirs_h` = VIIRS expressed as "MODIS Aqua equivalent"
+- `modis` = MODIS Aqua; `viirs_h` = VIIRS S-NPP as "MODIS Aqua equivalent"
+- VIIRS no-data days (`meta.no_data_days.viirs`): `viirs`/`viirs_h` are `null`, never 0
 
 ## Commands
 - `uv sync` · `uv run pytest` · `uv run python -m pipeline.run_all`

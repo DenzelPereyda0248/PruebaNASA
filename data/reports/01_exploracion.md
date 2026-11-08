@@ -1,6 +1,6 @@
 # 01 — Data exploration (Mexico, 2024)
 
-Generated 2026-11-08T04:16:10+00:00 by `pipeline/inspect_data.py`.
+Generated 2026-11-08T04:24:47+00:00 by `pipeline/inspect_data.py`.
 Raw files, no filters applied.
 
 ## Files
