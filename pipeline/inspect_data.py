@@ -63,6 +63,21 @@ def confidence_section(key: str, df: pd.DataFrame) -> str:
     return md_table(counts(conf, "confidence"), index=False)
 
 
+def format_runs(days: pd.DatetimeIndex) -> str:
+    """Compact consecutive days into ranges, e.g. '2024-05-30 → 06-03 (5 d)'."""
+    runs: list[list[pd.Timestamp]] = []
+    for d in days:
+        if runs and (d - runs[-1][1]).days == 1:
+            runs[-1][1] = d
+        else:
+            runs.append([d, d])
+    parts = []
+    for a, b in runs:
+        n = (b - a).days + 1
+        parts.append(f"{a:%Y-%m-%d}" if n == 1 else f"{a:%Y-%m-%d} → {b:%m-%d} ({n} d)")
+    return ", ".join(parts)
+
+
 def surprises(key: str, df: pd.DataFrame) -> list[str]:
     notes = []
     years = df["acq_date"].dt.year.unique()
@@ -81,9 +96,8 @@ def surprises(key: str, df: pd.DataFrame) -> list[str]:
     all_days = pd.date_range(f"{config.YEAR}-01-01", f"{config.YEAR}-12-31", freq="D")
     missing = all_days.difference(df["acq_date"].dt.normalize().unique())
     if len(missing):
-        shown = ", ".join(d.strftime("%Y-%m-%d") for d in missing[:10])
-        notes.append(f"{len(missing)} day(s) with no detections at all: {shown}"
-                     + (" ..." if len(missing) > 10 else ""))
+        notes.append(f"{len(missing)} day(s) with no detections at all "
+                     f"(likely data gaps, not days without fire): {format_runs(missing)}")
     return notes
 
 

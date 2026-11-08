@@ -1,6 +1,6 @@
 # 01 — Data exploration (Mexico, 2024)
 
-Generated 2026-11-08T04:10:01+00:00 by `pipeline/inspect_data.py`.
+Generated 2026-11-08T04:16:10+00:00 by `pipeline/inspect_data.py`.
 Raw files, no filters applied.
 
 ## Files
@@ -8,7 +8,7 @@ Raw files, no filters applied.
 | key | file | role | rows |
 |---|---|---|---|
 | modis | `modis_2024_Mexico.csv` | method input | 80,390 |
-| viirs | `viirs-snpp_2024_Mexico.csv` | method input | **MISSING** |
+| viirs | `viirs-snpp_2024_Mexico.csv` | method input | 330,134 |
 | viirs_noaa20 | `viirs-jpss1_2024_Mexico.csv` | alternative (not in scope) | 347,959 |
 
 ## NASA FIRMS MODIS C6.1 (`modis`)
@@ -85,6 +85,76 @@ Numeric summary: min 0, median 71, max 100.
 
 - No issues found.
 
+## NASA FIRMS VIIRS S-NPP 375 m (`viirs`)
+
+### Rows by satellite
+
+| satellite | rows | share |
+|---|---|---|
+| N | 330,134 | 100.0% |
+
+### Columns and types
+
+| column | dtype | example |
+|---|---|---|
+| latitude | float64 | 28.69653 |
+| longitude | float64 | -100.51449 |
+| bright_ti4 | float64 | 304.95 |
+| scan | float64 | 0.45 |
+| track | float64 | 0.63 |
+| acq_date | datetime64[us] | 2024-01-01 00:00:00 |
+| acq_time | str | 0739 |
+| satellite | str | N |
+| instrument | str | VIIRS |
+| confidence | str | n |
+| version | int64 | 2 |
+| bright_ti5 | float64 | 280.84 |
+| frp | float64 | 1.37 |
+| daynight | str | N |
+| type | int64 | 0 |
+
+### `type`
+
+| type | meaning | rows | share |
+|---|---|---|---|
+| 0 | vegetation fire | 293,133 | 88.8% |
+| 1 | active volcano | 228 | 0.1% |
+| 2 | other static land source | 35,782 | 10.8% |
+| 3 | offshore | 991 | 0.3% |
+
+### `confidence`
+
+| confidence | rows | share |
+|---|---|---|
+| h | 18,361 | 5.6% |
+| l | 43,015 | 13.0% |
+| n | 268,758 | 81.4% |
+
+### `daynight`
+
+| daynight | rows | share |
+|---|---|---|
+| D | 208,104 | 63.0% |
+| N | 122,030 | 37.0% |
+
+### Overpass hours (UTC, `acq_time`)
+
+| satellite | daynight | hour range (UTC) |
+|---|---|---|
+| N | D | 18–21 |
+| N | N | 06–10 |
+
+### Coverage
+
+- Date range: 2024-01-01 to 2024-12-31 (346 distinct days)
+- Bounding box: lon -117.095 to -86.827, lat 14.554 to 32.706
+- FRP (MW): median 4.8, p95 27.1, max 1022.7
+
+### Checks
+
+- ⚠️ 1 exact duplicate detections (same lat/lon/date/time/satellite)
+- ⚠️ 20 day(s) with no detections at all (likely data gaps, not days without fire): 2024-05-30 → 06-03 (5 d), 2024-07-10 → 07-15 (6 d), 2024-07-24 → 07-28 (5 d), 2024-09-26, 2024-11-03 → 11-05 (3 d)
+
 ## NASA FIRMS VIIRS NOAA-20 375 m (`viirs_noaa20`)
 
 ### Rows by satellite
@@ -153,24 +223,24 @@ Numeric summary: min 0, median 71, max 100.
 ### Checks
 
 - ⚠️ 1 exact duplicate detections (same lat/lon/date/time/satellite)
-- ⚠️ 1 day(s) with no detections at all: 2024-02-04
+- ⚠️ 1 day(s) with no detections at all (likely data gaps, not days without fire): 2024-02-04
 
 ## Detections per month (raw, all types and confidences)
 
-| month | modis:Aqua | modis:Terra | viirs_noaa20:N20 |
-|---|---|---|---|
-| Jan | 1,099 | 744 | 8,630 |
-| Feb | 1,850 | 1,305 | 12,145 |
-| Mar | 4,647 | 3,253 | 33,733 |
-| Apr | 10,304 | 8,025 | 76,638 |
-| May | 17,860 | 13,337 | 133,996 |
-| Jun | 4,737 | 4,384 | 44,748 |
-| Jul | 845 | 664 | 6,109 |
-| Aug | 606 | 775 | 4,996 |
-| Sep | 545 | 643 | 4,215 |
-| Oct | 408 | 641 | 4,817 |
-| Nov | 907 | 713 | 8,335 |
-| Dec | 1,154 | 944 | 9,597 |
-| **total** | 44,962 | 35,428 | 347,959 |
+| month | modis:Aqua | modis:Terra | viirs:N | viirs_noaa20:N20 |
+|---|---|---|---|---|
+| Jan | 1,099 | 744 | 8,564 | 8,630 |
+| Feb | 1,850 | 1,305 | 13,628 | 12,145 |
+| Mar | 4,647 | 3,253 | 35,056 | 33,733 |
+| Apr | 10,304 | 8,025 | 76,772 | 76,638 |
+| May | 17,860 | 13,337 | 125,673 | 133,996 |
+| Jun | 4,737 | 4,384 | 34,556 | 44,748 |
+| Jul | 845 | 664 | 4,514 | 6,109 |
+| Aug | 606 | 775 | 5,481 | 4,996 |
+| Sep | 545 | 643 | 3,886 | 4,215 |
+| Oct | 408 | 641 | 4,762 | 4,817 |
+| Nov | 907 | 713 | 7,397 | 8,335 |
+| Dec | 1,154 | 944 | 9,845 | 9,597 |
+| **total** | 44,962 | 35,428 | 330,134 | 347,959 |
 
 ![Monthly detections](01_monthly_detections.png)
