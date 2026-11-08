@@ -68,10 +68,19 @@ UTC_OFFSET_HOURS = -6
 H3_RESOLUTION = 5                  # ~250 km² per cell
 H3_RESOLUTION_ALT = 4              # sensitivity test
 
+# --- Satellite names -----------------------------------------------------------
+# FIRMS codes -> names used everywhere downstream (verified in Phase 1).
+SATELLITE_NAMES = {"Terra": "Terra", "Aqua": "Aqua", "N": "S-NPP"}
+
+# --- Data gaps -----------------------------------------------------------------
+# A local day with zero raw detections (before any filter) for a sensor is
+# treated as "no data" (instrument/processing outage), not as "no fire".
+# Phase 1 found 20 such days for VIIRS S-NPP in 2024 and none for MODIS.
+
 # --- Harmonization -------------------------------------------------------------
 HARMONIZATION_METHOD = "monthly_ratio_v1"
 REFERENCE_MODIS_SATELLITE = "Aqua"     # afternoon overpass, similar to S-NPP
-REFERENCE_VIIRS_SATELLITE = "N"        # S-NPP as coded in FIRMS (verify in Phase 1)
+REFERENCE_VIIRS_SATELLITE = "S-NPP"
 MIN_COMMON_CELL_DAYS = 30              # below this, fall back to the annual factor
 
 # --- Export --------------------------------------------------------------------
