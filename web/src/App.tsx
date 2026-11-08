@@ -162,7 +162,7 @@ export default function App() {
         <div className="cal">
           <h3>
             Daily {seriesInfo.label}
-            <span>{rows ? `${activeDays} days with detections` : ''}</span>
+            <span>{rows ? `${activeDays} ${activeDays === 1 ? 'day' : 'days'} with detections` : ''}</span>
           </h3>
           {rows ? (
             <CalendarChart
