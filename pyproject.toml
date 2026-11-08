@@ -1,0 +1,26 @@
+[project]
+name = "fire-calendar"
+version = "0.1.0"
+description = "Prototype: harmonized MODIS + VIIRS burning-activity calendar for Mexico (2024)"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "duckdb>=1.1",
+    "h3>=4.1,<5",
+    "matplotlib>=3.9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
