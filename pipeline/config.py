@@ -32,6 +32,26 @@ SOURCES = {
     },
 }
 
+# Files that are available but NOT part of the method unless the team approves
+# (PLAN.md section 2 leaves NOAA-20 out of scope). Only described in reports.
+ALT_SOURCES = {
+    "viirs_noaa20": {
+        "file": f"viirs-jpss1_{YEAR}_{COUNTRY}.csv",
+        "url": f"{FIRMS_BASE_URL}/viirs-jpss1/{YEAR}/viirs-jpss1_{YEAR}_{COUNTRY}.csv",
+        "label": "NASA FIRMS VIIRS NOAA-20 375 m",
+    },
+}
+
+# Columns every FIRMS file must have for the pipeline to work.
+REQUIRED_COLUMNS = [
+    "latitude", "longitude", "acq_date", "acq_time", "satellite",
+    "confidence", "frp", "daynight", "type",
+]
+
+# Rough bounding box of Mexico (lon_min, lat_min, lon_max, lat_max), used only
+# to flag suspicious coordinates in the exploration report.
+MEXICO_BBOX = (-118.6, 14.3, -86.5, 32.9)
+
 # --- Filters -----------------------------------------------------------------
 # type: 0 = presumed vegetation fire, 1 = active volcano,
 #       2 = other static land source, 3 = offshore
